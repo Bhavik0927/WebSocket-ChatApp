@@ -2,6 +2,12 @@ import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import { Connection } from './Database/db.js';
+
+dotenv.config();
+Connection();
+    
 
 
 const app = express();
@@ -27,7 +33,7 @@ app.use(cors(
 ))
 
 
-const PORT = 3000;
+
 
 app.get("/", (req, res) => {
     res.send("Hello World");
@@ -42,6 +48,6 @@ io.on("connection", (socket) => {
 });
 
 
-server.listen(PORT, () => {
-    console.log(`App is listen on ${PORT}`);
+server.listen(process.env.PORT, () => {
+    console.log(`App is listen on ${process.env.PORT}`);
 });
