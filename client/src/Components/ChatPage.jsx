@@ -1,8 +1,14 @@
 import React from 'react'
 
 const ChatPage = () => {
+  const handleLogout = () =>{
+
+  }
+  
   return (
-    <div>ChatPage</div>
+    <div>
+      <button onClick={handleLogout}>LogOut</button>
+    </div>
   )
 }
 

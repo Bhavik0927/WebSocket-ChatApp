@@ -1,14 +1,7 @@
-import Login from "./Login";
-import Signup from "./Signup";
+import Login from "./Auth/Login";
+import Signup from "./Auth/Signup";
 import { useState } from "react";
-import {
-  Container,
-  Box,
-  Typography,
-  Paper,
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Container, Box, Typography, Paper, Tabs, Tab } from "@mui/material";
 
 
 function TabPanel({ children, value, index }) {
@@ -20,27 +13,7 @@ function TabPanel({ children, value, index }) {
 }
 
 const HomePage = () => {
-    
   const [tabValue, setTabValue] = useState(0);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("Login Data:", formData);
-  };
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    console.log("Signup Data:", formData);
-  };
 
   return (
     <Container maxWidth="xs">
@@ -54,10 +27,6 @@ const HomePage = () => {
           alignItems: "center",
         }}
       >
-        {/* Avatar + Title */}
-        {/* <Avatar sx={{ bgcolor: "primary.main", mb: 2 }}>
-          <LockOutlinedIcon />
-        </Avatar> */}
         <Typography variant="h5" gutterBottom>
           Authentication
         </Typography>
@@ -73,22 +42,12 @@ const HomePage = () => {
           <Tab label="Signup" />
         </Tabs>
 
-        {/* Login Form */}
         <TabPanel value={tabValue} index={0}>
-          <Login
-            formData={formData}
-            handleChange={handleChange}
-            handleLogin={handleLogin}
-          />
+          <Login/>
         </TabPanel>
 
-        {/* Signup Form */}
         <TabPanel value={tabValue} index={1}>
-          <Signup
-            formData={formData}
-            handleChange={handleChange}
-            handleSignup={handleSignup}
-          />
+          <Signup/>
         </TabPanel>
       </Paper>
     </Container>

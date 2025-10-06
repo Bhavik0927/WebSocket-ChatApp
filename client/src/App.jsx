@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { io } from "socket.io-client";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./Components/HomePage";
-import ChatPage from "./Components/ChatPage";
-import './App.css';
+import "./App.css";
 
+const HomePage = lazy(() => import("./Components/HomePage"));
+const ChatPage = lazy(() => import("./Components/ChatPage"));
 
 const App = () => {
   // we need to give backend url here
@@ -22,10 +22,12 @@ const App = () => {
 
   return (
     <div className="App">
-      <Routes>
-        <Route exact path="/"  element={<HomePage />} />
-        <Route path="/chats" element={<ChatPage />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route path="/chats" element={<ChatPage />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 };
