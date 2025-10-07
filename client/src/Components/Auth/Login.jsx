@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import {Box, TextField, Button, IconButton, InputAdornment, } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-
   const navigate = useNavigate();
-
 
   const [formData, setFormData] = useState({
     email: "",
@@ -17,49 +20,37 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(true);
 
-  const handleChange = (e) =>{
-    const {name, value} = e.target;
-    setFormData({...formData ,[name] : value});
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const handleLogin = async (e) =>{
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log(formData.email);
-    console.log(formData.password);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
 
-
-    const response = await axios.post(
-      "http://localhost:5000/api/user/login",
-      {
-        email: formData.email,
-        password: formData.password,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    );
-
-    console.log(response);
-    toast.success(`Login successfully ${response?.data?.existUser?.name}`)
-    navigate("/chats");
-  }
-
+      toast.success(`Welcome ${response?.data?.existUser?.name}`);
+      navigate("/chats");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <Box component="form" onSubmit={handleLogin}>
       <TextField
-              margin="normal"
-              fullWidth
-              label="Email Address"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-      {/* <TextField
         margin="normal"
         fullWidth
         label="Email Address"
@@ -68,7 +59,8 @@ const Login = () => {
         value={formData.email}
         onChange={handleChange}
         required
-      /> */}
+      />
+      
       <TextField
         margin="normal"
         fullWidth
