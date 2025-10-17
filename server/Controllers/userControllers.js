@@ -4,14 +4,14 @@ import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 
 
-const generateAccessAndRefreshToken = async (userId) =>{
-  try {
-    const user = await User.findById(userId);
+// const generateAccessAndRefreshToken = async (userId) =>{
+//   try {
+//     const user = await User.findById(userId);
     
-  } catch (error) {
-    throw new Error("Something went wrong while generating tokens");
-  }
-}
+//   } catch (error) {
+//     throw new Error("Something went wrong while generating tokens");
+//   }
+// }
 
 export const RegisterUser = asyncHandler(async (req, res) => {
   const { name, email, password, picture } = req.body;
@@ -85,13 +85,18 @@ export const Logout_user = asyncHandler(async (req,res) =>{
 
 
 export const All_users = asyncHandler(async (req,res) =>{
-  const keyword = req.query.search ? {
-    $or:[
-      {name: {$regex: req.query.search, $options: "i"}},
-      {email: {$regex: req.query.search, $options: "i"}}
-    ]
-  }: {}
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
 
-  const users = await User.find(keyword);
+  // $ne selects the documents where the value of the specified field is not equal to the specified value. This includes documents that do not contain the specified field.
+
+  console.log(req.user?._id);
+  const users = await User.find(keyword).find({_id: {$ne: req.user?._id}});
   res.send(users);
 })

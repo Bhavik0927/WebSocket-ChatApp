@@ -18,11 +18,10 @@ const user_Schema = mongoose.Schema(
 user_Schema.methods.generateRefeshToken = function(){
   return jwt.sign(
     {
-      _id: this._id
+      _id: this._id,
     },
-    proc
-
-  )
+    process.env.SECRET_KEY
+  );
 }
 
 user_Schema.pre('save', async (next) =>{

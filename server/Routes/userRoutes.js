@@ -6,9 +6,9 @@ const User_Router = express.Router();
 
 User_Router.post("/register", RegisterUser);
 User_Router.post("/login", AuthUser);
-User_Router.post("/logout", Logout_user );
+User_Router.post("/logout",Protect, Logout_user );
 
-User_Router.get("/list", All_users);
+User_Router.get("/",Protect, All_users);
 
 
 export default User_Router;

@@ -7,6 +7,7 @@ import { Connection } from './Database/db.js';
 import User_Router from './Routes/userRoutes.js';
 import cookieParser from 'cookie-parser';
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
+import chat_router from './Routes/chatRoutes.js';
 
 
 dotenv.config();
@@ -57,6 +58,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", User_Router);
+app.use('/api/chat', chat_router);
 
 // io.on("connection", (socket) => {
 //     console.log("a user connected...");
