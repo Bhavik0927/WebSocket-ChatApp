@@ -4,6 +4,14 @@ import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 
 
+const generateAccessAndRefreshToken = async (userId) =>{
+  try {
+    const user = await User.findById(userId);
+    
+  } catch (error) {
+    throw new Error("Something went wrong while generating tokens");
+  }
+}
 
 export const RegisterUser = asyncHandler(async (req, res) => {
   const { name, email, password, picture } = req.body;
@@ -65,6 +73,7 @@ export const AuthUser = asyncHandler(async (req, res) => {
 
 
 export const Logout_user = asyncHandler(async (req,res) =>{
+  
   res.clearCookie("token",{
     httpOnly:true,
     secure:true,
@@ -72,4 +81,17 @@ export const Logout_user = asyncHandler(async (req,res) =>{
   });
 
   return res.status(200).json({message:"Logout Successfully"})
+})
+
+
+export const All_users = asyncHandler(async (req,res) =>{
+  const keyword = req.query.search ? {
+    $or:[
+      {name: {$regex: req.query.search, $options: "i"}},
+      {email: {$regex: req.query.search, $options: "i"}}
+    ]
+  }: {}
+
+  const users = await User.find(keyword);
+  res.send(users);
 })

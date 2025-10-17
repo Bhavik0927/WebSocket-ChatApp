@@ -9,6 +9,7 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const Signup = () => {
     picture: null,
   });
 
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -58,6 +60,7 @@ const Signup = () => {
 
       toast.success("Signup successful!");
       console.log("Response:", response.data);
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Signup failed!");
       console.error("Signup Error:", error);

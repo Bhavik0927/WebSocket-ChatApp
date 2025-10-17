@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 const user_Schema = mongoose.Schema(
   {
@@ -14,12 +15,21 @@ const user_Schema = mongoose.Schema(
   { timestamps: true }
 );
 
+user_Schema.methods.generateRefeshToken = function(){
+  return jwt.sign(
+    {
+      _id: this._id
+    },
+    proc
 
-// user_Schema.pre('save', async (next) =>{
-//   if(!this.modified){
-//     next();
-//   }
-// })
+  )
+}
+
+user_Schema.pre('save', async (next) =>{
+  if(!this.modified){
+    next();
+  }
+})
 
 const User = mongoose.model("User", user_Schema);
 export default User;
